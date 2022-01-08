@@ -7,30 +7,28 @@ function App() {
 
   interface FarmInfo {
     location: string;
-    datetime: string;
+    datetime: Date;
     sensorType: string;
     value: number;
   }
 
   useEffect(() => {
-    fetchpost();
+    fetchFarmData();
   }, []);
 
-  const fetchpost = async () => {
+  const fetchFarmData = async () => {
     try {
-      const { data } = await axios.get("http://localhost:8000/farm");
-      console.log(data)
+      const { data } = await axios.get(`http://localhost:8000/api/farm`);
+      console.log(data);
       setfarmInfo(data);
     } catch (err) {
       console.log(err);
     }
   };
 
-
   return (
     <div>
-      <header>
-      </header>
+      <header></header>
       <table className="App" cellPadding={5} cellSpacing={5}>
         <tbody>
           <tr>
