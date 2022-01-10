@@ -4,7 +4,9 @@ import "./App.css";
 
 function App() {
   const [farmInfo, setfarmInfo] = useState<any>([]);
-
+  const [month, setMonth] = useState("1");
+  const [year, setYear] = useState("2021");
+  const [sType, setsType] = useState("pH");
   interface FarmInfo {
     location: string;
     datetime: Date;
@@ -14,11 +16,13 @@ function App() {
 
   useEffect(() => {
     fetchFarmData();
-  }, []);
+  }, [month, year]);
 
   const fetchFarmData = async () => {
     try {
-      const { data } = await axios.get(`http://localhost:8000/api/farm`);
+      const { data } = await axios.get(
+        `http://localhost:8000/api/farm?year=${year}&month=${month}&sType=${sType}`
+      );
       console.log(data);
       setfarmInfo(data);
     } catch (err) {
@@ -29,7 +33,7 @@ function App() {
   return (
     <div>
       <header></header>
-      <table className="App" cellPadding={5} cellSpacing={5}>
+      <table cellPadding={5} cellSpacing={5}>
         <tbody>
           <tr>
             <th>Location</th>
