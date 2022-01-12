@@ -16,12 +16,16 @@ farmRoute.get("/farm", async (req: Request, res: Response) => {
           { $eq: ["$sensorType", sType] },
         ],
       },
-    });
+    }).sort({datetime : 1});
 
     res.json(data);
   } catch (err) {
     res.status(500).json({ message: "Error" });
   }
 });
+
+farmRoute.get("farmall", async(req: Request, res: Response) => {
+  Farm.find().then((farm) => res.json(farm))
+})
 
 export default farmRoute;
