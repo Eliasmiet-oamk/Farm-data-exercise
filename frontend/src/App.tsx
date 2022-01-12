@@ -53,25 +53,6 @@ function App() {
     }
   };
 
-  const handleChangeMonth = (e: any) => {
-    setMonth(e.target.value);
-  };
-
-  const handleChangeYear = (e: any) => {
-    setYear(e.target.value);
-  };
-
-  const handleChangesType = (e: any) => {
-    setsType(e.target.value);
-  };
-
-  const handleChangeFarmName = (e: any) => {
-    setFarmName(e.target.value);
-  };
-  const handleChangefarmInfo = () => {
-    setfarmInfo(result);
-  };
-
   const labels = farmInfo.map((infos: FarmInfo) => [
     infos.location,
     infos.datetime,
@@ -100,7 +81,7 @@ function App() {
   });
 
   // filters Farm names
-  let result = farmInfo.filter(
+  let filteredFarmName = farmInfo.filter(
     (t: { location: string }) => t.location === farmName
   );
 
@@ -108,8 +89,11 @@ function App() {
     <div>
       <header>
         <button onClick={() => setToggle(!toggle)}>Toggle Chart/Table</button>
-        <button onClick={handleChangefarmInfo}>Search by Farm</button>
-        <select onChange={handleChangeFarmName}>
+        <button onClick={() => setfarmInfo(filteredFarmName)}>
+          Search by Farm
+        </button>
+        <select onChange={(e: any) => setFarmName(e.target.value)}>
+          <option>All Farms</option>
           {uniqueFarms.map((info: any, idx: number) => (
             <option key={idx} value={info.location}>
               {info.location}
@@ -117,7 +101,7 @@ function App() {
           ))}
         </select>
         <button onClick={fetchFarmData}>x</button>
-        <select onChange={handleChangeMonth}>
+        <select onChange={(e: any) => setMonth(e.target.value)}>
           <option value="1">1</option>
           <option value="2">2</option>
           <option value="3">3</option>
@@ -131,13 +115,13 @@ function App() {
           <option value="11">11</option>
           <option value="12">12</option>
         </select>
-        <select onChange={handleChangeYear}>
+        <select onChange={(e: any) => setYear(e.target.value)}>
           <option value="2021">2021</option>
           <option value="2020">2020</option>
           <option value="2019">2019</option>
           <option value="2018">2018</option>
         </select>
-        <select onChange={handleChangesType}>
+        <select onChange={(e: any) => setsType(e.target.value)}>
           <option value="pH">pH</option>
           <option value="rainFall">rainFall</option>
           <option value="temperature">temperature</option>

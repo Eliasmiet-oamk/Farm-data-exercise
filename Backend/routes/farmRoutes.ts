@@ -16,7 +16,7 @@ farmRoute.get("/farm", async (req: Request, res: Response) => {
           { $eq: ["$sensorType", sType] },
         ],
       },
-    }).sort({datetime : 1});
+    }).sort({ datetime: 1 });
 
     res.json(data);
   } catch (err) {
@@ -24,8 +24,27 @@ farmRoute.get("/farm", async (req: Request, res: Response) => {
   }
 });
 
-farmRoute.get("farmall", async(req: Request, res: Response) => {
-  Farm.find().then((farm) => res.json(farm))
-})
+farmRoute.get("/farmStats", async (req: Request, res: Response) => {
+  try {
+    const data = await Farm.aggregate([
+      {
+        $group: {
+          _id: {
+            year: { $year: "$datetime" },
+            month: { $month: "$datetime" },
+            sensorType: "$sensorType",
+            location: "$location",
+          },
+          average_value: { $avg: "$value" },
+          max_value: { $max: "$value" },
+          min_value: { $min: "$value" },
+        },
+      },
+    ]);
+    res.json(data);
+  } catch (err) {
+    res.status(500).json({ message: "Error" });
+  }
+});
 
 export default farmRoute;
