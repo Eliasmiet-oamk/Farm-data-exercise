@@ -1,5 +1,6 @@
 import React, { FC } from "react";
 import {FarmInfo} from '../interfaces/FarmInterface'
+import '../style/ListStyle.css'
 
 interface Props {
   FarmData: any;
@@ -7,7 +8,7 @@ interface Props {
 
 const List: FC<Props> = ({ FarmData }) => {
   return (
-    <table cellPadding={5} cellSpacing={5}>
+    <table id="list"  cellPadding={5} cellSpacing={5}>
       <tbody>
         <tr>
           <th>Location</th>
@@ -16,8 +17,8 @@ const List: FC<Props> = ({ FarmData }) => {
           <th>Value</th>
         </tr>
         {FarmData.map((info: FarmInfo, idx: number) => (
-          <tr key={idx}>
-            <td> {info.location} </td>
+          <tr  key={idx}>
+            <td title="table"> {info.location} </td>
             <td> {info.datetime} </td>
             <td> {info.sensorType} </td>
             <td> {info.value} </td>

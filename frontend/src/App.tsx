@@ -1,7 +1,7 @@
 import React, { useEffect, useState, lazy, Suspense } from "react";
 import NameFilter from "./components/NameFilter";
 import axios from "axios";
-import "./App.css";
+import "./style/App.css";
 
 function App() {
   const ListStat = lazy(() => import("./components/ListStat"));
@@ -21,6 +21,7 @@ function App() {
   useEffect(() => {
     fetchFarmData();
     fetchFarmStats();
+    setFilteredFarm([]);
   }, [month, year, sType]);
 
   const fetchFarmData = async () => {
@@ -59,8 +60,8 @@ function App() {
 
   return (
     <Suspense fallback={renderLoader()}>
-      <div>
-        <header>
+      <div className="background">
+        <header className="center">
           <button onClick={() => setToggle(!toggle)}>Toggle Chart/Table</button>
           <button onClick={filterLocation}> Search by Farm</button>
           <NameFilter FarmData={farmInfo} stateProp={setFarmName} />

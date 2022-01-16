@@ -1,12 +1,12 @@
 import React, { FC } from "react";
-
+import "../style/ListStyle.css";
 interface Props {
   FarmData: any;
 }
 
 const ListStat: FC<Props> = ({ FarmData }) => {
   return (
-    <table cellPadding={3} cellSpacing={3}>
+    <table id="list" cellPadding={0} cellSpacing={0}>
       <tbody>
         <tr>
           <th>Location</th>

@@ -1,5 +1,7 @@
 import express, { Express, Request, Response, NextFunction } from "express";
 import Farm from "../schemas/farmSchema";
+import * as csv from "csvtojson";
+import multer from "multer";
 
 const farmRoute = express.Router();
 
@@ -60,5 +62,41 @@ farmRoute.get("/farmStats", async (req: Request, res: Response) => {
     res.status(500).json({ message: "Error" });
   }
 });
+
+const storage = multer.memoryStorage();
+const upload = multer({ storage: storage });
+
+farmRoute.post(
+  "/upload-csv",
+  upload.single("csv"),
+  async (req: Request, res: Response) => {
+    try {
+      const farmArray = await csv
+        .default()
+        .fromString((req as any).file.buffer.toString());
+
+      if (farmArray.length != 0) {
+        for (let i = 0; i < farmArray.length; i++) {
+          const newFarm = new Farm({
+            location: farmArray[i].location,
+            datetime: farmArray[i].datetime,
+            sensorType: farmArray[i].sensorType,
+            value: farmArray[i].value,
+          });
+
+          newFarm.save(function (err) {
+            if (err) {
+              console.log(err);
+            }
+          });
+        }
+      }
+
+      res.status(200).send("Uploaded successfully!");
+    } catch {
+      res.status(500).json({ message: "Error" });
+    }
+  }
+);
 
 export default farmRoute;
